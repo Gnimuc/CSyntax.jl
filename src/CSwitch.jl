@@ -1,5 +1,7 @@
 module CSwitch
 
+export @switch
+
 # inspired by dcjones's Switch.jl
 macro switch(constexpr, body)
     case2label = Dict{Any,Symbol}()
