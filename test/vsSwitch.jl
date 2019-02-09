@@ -11,7 +11,7 @@
 # basic switch constructs
 function switch_with_fallthrough(x::Int)
     xs = Int[]
-    @switch x begin
+    @cswitch x begin
         @case 1
             push!(xs, 1)
 
@@ -30,7 +30,7 @@ end
 # fallthrough with weird default case placement
 function switch_with_leading_default(x::Int)
     xs = Int[]
-    @switch x begin
+    @cswitch x begin
         @default
             push!(xs, 4)
 
@@ -50,7 +50,7 @@ end
 # switching with expressions
 function switch_with_expressions(x::Int)
     xs = Int[]
-    @switch x + 1 begin
+    @cswitch x + 1 begin
         @case 1 + 1
             push!(xs, 1)
 
@@ -69,7 +69,7 @@ end
 # switching with breaks
 function switch_with_break(x::Int)
     xs = Int[]
-    @switch x begin
+    @cswitch x begin
         @case 1
             push!(xs, 1)
             break

@@ -1,9 +1,9 @@
 module CSwitch
 
-export @switch
+export @cswitch
 
 # inspired by dcjones's Switch.jl
-macro switch(constexpr, body)
+macro cswitch(constexpr, body)
     case2label = Dict{Any,Symbol}()
     flow = Expr(:block)
     end_label = gensym("end")
