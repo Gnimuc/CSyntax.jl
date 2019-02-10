@@ -3,3 +3,121 @@
 [![Build Status](https://travis-ci.com/Gnimuc/CSyntax.jl.svg?branch=master)](https://travis-ci.com/Gnimuc/CSyntax.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Gnimuc/CSyntax.jl?svg=true)](https://ci.appveyor.com/project/Gnimuc/CSyntax-jl)
 [![Codecov](https://codecov.io/gh/Gnimuc/CSyntax.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Gnimuc/CSyntax.jl)
+
+This package provides serval macros for making life easier when translating C code to Julia.
+
+## Installation
+```
+pkg> add CSyntax
+```
+
+## Submodules
+### CRef
+This module provides a macro `@cref`/`@c` for emulating C's `&`(address) operator:
+```julia
+julia> using CSyntax.CRef
+
+julia> function foo(x)
+           x[] += 1
+           return x
+       end
+foo (generic function with 1 method)
+
+julia> x = 0
+0
+
+julia> @cref foo(&x)
+Base.RefValue{Int64}(1)
+
+julia> x
+1
+```
+It's very useful when working with C-bindings. Comparing the following Julia code
+```julia
+vbo = GLuint(0)
+@c glGenBuffers(1, &vbo)
+glBindBuffer(GL_ARRAY_BUFFER, vbo)
+glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), points, GL_STATIC_DRAW)
+```
+to
+```c
+GLuint vbo;
+glGenBuffers(1, &vbo);
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), points, GL_STATIC_DRAW);
+```
+they're nearly identical aside from the `@c` macro. Without this, one need to manually edit the code at least 3 more times and life will be quickly burned in the hell:
+```julia
+vboID = Ref{GLuint}(0)
+glGenBuffers(1, vboID)
+glBindBuffer(GL_ARRAY_BUFFER, vboID[])
+# segment faults are waiting for you unless you dereference vboID correctly in every place hereafter 
+```
+
+### CFor
+This submodule provides a `@cfor` macro for emulating C's for-loops syntax:
+
+```julia
+julia> using CSyntax.CFor
+
+julia> x = 0
+0
+
+julia> @cfor i=0 i<10 i+=1 begin
+           global x += 1
+       end
+
+julia> x
+10
+
+# @cfor with @++
+julia> using CSyntax: @++
+
+julia> @cfor i=0 i<10 @++(i) begin
+           i > 5 && continue  # well, this is actually illegal in C
+           global x += 1
+       end
+
+julia> x
+16
+
+julia> let
+           global j
+           @cfor nothing (j > 3) j-=1 begin
+               global x += 1
+           end
+       end
+
+julia> x
+23
+```
+
+### CSwitch
+This submodule provides C-like switch statement with the "falling through" behavior.
+It is inspired by [`dcjones`](https://github.com/dcjones)'s package [Switch.jl](https://github.com/dcjones/Switch.jl) which has died out since Julia v0.5. Anyway, it has been resurrected here.
+
+```julia
+julia> using CSyntax.CSwitch
+
+julia> @enum test t=1 f=2
+
+julia> tester = t
+t::test = 1
+
+julia> @cswitch tester begin
+           @case t
+               x = 1
+               break
+           @case f
+               x = 2
+               break
+       end
+
+julia> x
+1
+```
+
+## TODO?
+- [ ] `@cmacro`? how to correctly handle recursive macro expansion rules?
+- [ ] `@cdo-while`? it's very trivial to implement but not very useful I guess
+- [ ] `@cstar`? `*` aka the so called indirection operator
