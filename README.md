@@ -32,7 +32,7 @@ Base.RefValue{Int64}(1)
 julia> x
 1
 ```
-It's very useful when working with C-bindings. Comparing the following Julia code
+It's very useful when calling C-bindings from Julia. Comparing the following Julia code
 ```julia
 vbo = GLuint(0)
 @c glGenBuffers(1, &vbo)
@@ -51,7 +51,7 @@ they're nearly identical aside from the `@c` macro. Without this, one need to ma
 vboID = Ref{GLuint}(0)
 glGenBuffers(1, vboID)
 glBindBuffer(GL_ARRAY_BUFFER, vboID[])
-# segment faults are waiting for you unless you dereference vboID correctly in every place hereafter 
+# segment faults are waiting for you unless you dereference vboID correctly in every place hereafter
 ```
 
 ### CFor
@@ -115,6 +115,22 @@ julia> @cswitch tester begin
 
 julia> x
 1
+```
+### CEnum
+[CEnum.jl](https://github.com/JuliaInterop/CEnum.jl) is also integrated in this package.
+```julia
+julia> @enum Foo a = 1 b = 2 c = 1
+ERROR: LoadError: ArgumentError: values for Enum Foo are not unique
+Stacktrace:
+ [1] @enum(::LineNumberNode, ::Module, ::Any, ::Vararg{Any,N} where N) at ./Enums.jl:128
+in expression starting at REPL[12]:1
+
+julia> using CSyntax.CEnum
+
+julia> @cenum(Bar, d = 1, e = 2, f = 1)
+
+julia> d == f
+true
 ```
 
 ## TODO?
