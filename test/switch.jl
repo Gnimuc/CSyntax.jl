@@ -26,7 +26,7 @@ include("vsSwitch.jl")
     @testset "enums" begin
         @enum test t=1 f=2
         tester = t
-        @switch tester begin
+        @cswitch tester begin
             @case t
             x = 1
             break

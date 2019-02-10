@@ -1,10 +1,19 @@
 module CSyntax
 
+using CEnum
+
 include("CSwitch.jl")
 using .CSwitch
 
 include("CFor.jl")
 using .CFor
+
+include("CRef.jl")
+using .CRef
+
+# add @c as an alias of @cref
+@eval const $(Symbol("@c")) = $(Symbol("@cref"))
+export @c
 
 """
 PrefixIncrement Operator
@@ -33,7 +42,5 @@ end
 # @-- is invalid
 
 export @+, @++, @-
-
-
 
 end # module

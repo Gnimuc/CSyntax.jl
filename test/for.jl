@@ -37,9 +37,7 @@ function for_nested()
     A
 end
 
-
-
-@testset "for-loops" begin
+@testset "CFor" begin
     @test for_basic() == 10
     @test for_continue() == 0
     @test for_break() == 1
