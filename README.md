@@ -46,12 +46,12 @@ glGenBuffers(1, &vbo);
 glBindBuffer(GL_ARRAY_BUFFER, vbo);
 glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(GLfloat), points, GL_STATIC_DRAW);
 ```
-they're nearly identical aside from the `@c` macro. Without this, one need to manually edit the code at least 3 more times and life will be quickly burned in the hell:
+they're nearly identical aside from the `@c` macro. Without this, one need to manually edit the code at least 3 more times and life will be quickly burning in the hell:
 ```julia
 vboID = Ref{GLuint}(0)
 glGenBuffers(1, vboID)
 glBindBuffer(GL_ARRAY_BUFFER, vboID[])
-# segment faults are waiting for you unless you dereference vboID correctly in every place hereafter
+# errors are waiting for you unless you dereference vboID correctly in every place hereafter
 ```
 
 ### CFor
