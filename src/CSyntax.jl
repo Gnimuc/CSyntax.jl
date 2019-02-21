@@ -11,6 +11,9 @@ using .CFor
 include("CRef.jl")
 using .CRef
 
+include("CStatic.jl")
+using .CStatic
+
 # add @c as an alias of @cref
 @eval const $(Symbol("@c")) = $(Symbol("@cref"))
 export @c

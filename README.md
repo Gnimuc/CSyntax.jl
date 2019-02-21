@@ -53,6 +53,30 @@ glGenBuffers(1, vboID)
 glBindBuffer(GL_ARRAY_BUFFER, vboID[])
 # errors are waiting for you unless you dereference vboID correctly in every place hereafter
 ```
+### CStatic
+This submodule provides a `@cstatic` macro for emulating C's static syntax:
+```julia
+function foo()
+    @cstatic i=0 begin
+        for n = 1:10
+            i += 1
+        end
+    end
+    return i
+end
+```
+vs
+```c
+int foo(void) {
+    static int i = 0;
+    for (int n = 0; n < 10; n++) {
+        i++;
+    }
+    return i;
+}
+```
+Note that `return` inside the `@cstatic` block is currently not supported (the static state
+won't be recorded correctly). 
 
 ### CFor
 This submodule provides a `@cfor` macro for emulating C's for-loops syntax:
