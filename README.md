@@ -62,7 +62,6 @@ function foo()
             i += 1
         end
     end
-    return i
 end
 ```
 vs
@@ -75,8 +74,9 @@ int foo(void) {
     return i;
 }
 ```
-Note that `return` inside the `@cstatic` block is currently not supported (the static state
-won't be recorded correctly). 
+`@cstatic` will return a tuple of current state of the input arguments, but note that jumping
+out from the `@cstatic` block (e.g. `return`, `goto`, etc.) is currently not supported,
+state changes before jumping will be lost.
 
 ### CFor
 This submodule provides a `@cfor` macro for emulating C's for-loops syntax:
