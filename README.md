@@ -53,6 +53,23 @@ glGenBuffers(1, vboID)
 glBindBuffer(GL_ARRAY_BUFFER, vboID[])
 # errors are waiting for you unless you dereference vboID correctly in every place hereafter
 ```
+
+Note, everything after `&` will be treated as scalar except one dimensional arrays indexing in which case the corresponding pointer address will be retrieved, for example:
+```julia
+A = rand(10)
+@c foo(a, b, &A[n]) # ==> foo(a, b, pointer(A) + n * Core.sizeof(eltype(A)))
+```
+but
+```julia
+A = rand(10)
+@c foo(a, b, &A)
+# this is not array indexing, so the result is
+# A_cref = Ref(A)
+# foo(a, b, A_cref)
+# A = A_cref[]
+```
+
+
 ### CStatic
 This submodule provides a `@cstatic` macro for emulating C's static syntax:
 ```julia
