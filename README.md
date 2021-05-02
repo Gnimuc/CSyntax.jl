@@ -1,8 +1,7 @@
 # CSyntax
 
-[![Build Status](https://travis-ci.com/Gnimuc/CSyntax.jl.svg?branch=master)](https://travis-ci.com/Gnimuc/CSyntax.jl)
-![CI](https://github.com/Gnimuc/CSyntax.jl/workflows/CI/badge.svg)
-![TagBot](https://github.com/Gnimuc/CSyntax.jl/workflows/TagBot/badge.svg)
+[![CI](https://github.com/Gnimuc/CSyntax.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/Gnimuc/CSyntax.jl/actions/workflows/ci.yml)
+[![TagBot](https://github.com/Gnimuc/CSyntax.jl/actions/workflows/TagBot.yml/badge.svg)](https://github.com/Gnimuc/CSyntax.jl/actions/workflows/TagBot.yml)
 [![Codecov](https://codecov.io/gh/Gnimuc/CSyntax.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/Gnimuc/CSyntax.jl)
 
 This package provides several macros for making life easier when translating C code to Julia.

@@ -1,6 +1,6 @@
 name = "CSyntax"
 uuid = "ea656a56-6ca6-5dda-bba5-7b6963a5f74c"
-authors = ["Gnimuc <qiyupei@gmail.com>"]
+authors = ["Yupei Qi <qiyupei@gmail.com>"]
 version = "0.4.0"
 
 [deps]
